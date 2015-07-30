@@ -1,0 +1,8 @@
+language: go
+
+go: 1.4.2
+
+install:
+    - go get github.com/gorilla/mux
+
+    - export GOPATH=${TRAVIS_BUILD_DIR}:$GOPATH
