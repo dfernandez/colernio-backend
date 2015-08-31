@@ -1,1 +1,1 @@
-# colernio-backend [![Build Status](https://travis-ci.org/david1983xtc/colernio-backend.svg)](https://travis-ci.org/david1983xtc/colernio-backend)
+# colernio-backend [![Build Status](https://travis-ci.org/david1983xtc/colernio-backend.svg)](https://travis-ci.org/david1983xtc/colernio-backend) [![Coverage Status](https://coveralls.io/repos/david1983xtc/colernio-backend/badge.svg?branch=master&service=github)](https://coveralls.io/github/david1983xtc/colernio-backend?branch=master)
