@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"golang.org/x/net/websocket"
 )
 
 type Course struct {
@@ -17,11 +18,15 @@ var Router = func() *mux.Router {
 
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", Index).Methods("GET")
+	router.Handle("/ws", websocket.Handler(WebsocketHandler))
 
 	return router
 }()
 
 func New() {
+
+	Srv = Server{make(map[string]Client)}
+
 	log.Fatal(http.ListenAndServe(":8080", Router))
 }
 

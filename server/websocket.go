@@ -1,11 +1,11 @@
-package main
+package server
 
 import (
 	"encoding/json"
-	"golang.org/x/net/websocket"
 	"log"
-	"net/http"
 	"strconv"
+
+	"golang.org/x/net/websocket"
 )
 
 type Command struct {
@@ -53,7 +53,7 @@ func (c Client) write(response []byte) {
 	c.ws.Write(response)
 }
 
-func eventHandler(ws *websocket.Conn) {
+func WebsocketHandler(ws *websocket.Conn) {
 	key := ws.Request().Header.Get("Sec-Websocket-Key")
 
 	client := Client{ws, key}
@@ -75,16 +75,5 @@ func eventHandler(ws *websocket.Conn) {
 		json.Unmarshal(msg[:n], &cmd)
 
 		client.process(cmd)
-	}
-}
-
-func main() {
-
-	Srv = Server{make(map[string]Client)}
-
-	http.Handle("/ws", websocket.Handler(eventHandler))
-	err := http.ListenAndServe(":8080", nil)
-	if err != nil {
-		panic("ListenAndServe: " + err.Error())
 	}
 }
