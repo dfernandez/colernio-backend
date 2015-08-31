@@ -4,5 +4,6 @@ go: 1.4.2
 
 install:
     - go get github.com/gorilla/mux
+    - go get golang.org/x/net/websocket
 
     - export GOPATH=${TRAVIS_BUILD_DIR}:$GOPATH
