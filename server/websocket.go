@@ -13,11 +13,6 @@ type Command struct {
 	Data  string `json:"data,omitempty"`
 }
 
-type Client struct {
-	ws  *websocket.Conn
-	key string
-}
-
 type Server struct {
 	Clients map[string]Client
 }
@@ -25,10 +20,8 @@ type Server struct {
 var Srv Server
 
 func (srv Server) broadcast(cmd Command) {
-	response, _ := json.Marshal(cmd)
-
 	for _, c := range srv.Clients {
-		c.write(response)
+		c.write(cmd)
 	}
 }
 
@@ -40,17 +33,6 @@ func (srv Server) register(c Client) {
 func (srv Server) unregister(c Client) {
 	delete(srv.Clients, c.key)
 	srv.broadcast(Command{"num_clients", strconv.Itoa(len(srv.Clients))})
-}
-
-func (c Client) process(cmd Command) {
-	log.Println(cmd.Event)
-
-	response, _ := json.Marshal(Command{"pong", ""})
-	c.write(response)
-}
-
-func (c Client) write(response []byte) {
-	c.ws.Write(response)
 }
 
 func WebsocketHandler(ws *websocket.Conn) {
@@ -73,6 +55,8 @@ func WebsocketHandler(ws *websocket.Conn) {
 
 		var cmd Command
 		json.Unmarshal(msg[:n], &cmd)
+
+		log.Println(cmd.Event)
 
 		client.process(cmd)
 	}
